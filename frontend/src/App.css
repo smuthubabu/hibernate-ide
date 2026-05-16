@@ -72,9 +72,41 @@
   gap: 8px;
 }
 
+@keyframes logo-breathe {
+  0%, 100% { text-shadow: 0 0 6px rgba(137,180,250,0.35); }
+  50%       { text-shadow: 0 0 14px rgba(137,180,250,0.9), 0 0 28px rgba(137,180,250,0.4); }
+}
+
+@keyframes logo-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes logo-charge {
+  0%   { transform: scale(1)    rotate(0deg);   filter: brightness(1);   text-shadow: 0 0 6px rgba(137,180,250,0.4); }
+  20%  { transform: scale(0.7)  rotate(-60deg); filter: brightness(0.5); text-shadow: none; }
+  55%  { transform: scale(1.55) rotate(210deg); filter: brightness(2.6); text-shadow: 0 0 24px #89b4fa, 0 0 48px rgba(137,180,250,0.6); }
+  80%  { transform: scale(1.12) rotate(345deg); filter: brightness(1.4); text-shadow: 0 0 12px rgba(137,180,250,0.7); }
+  100% { transform: scale(1)    rotate(360deg); filter: brightness(1);   text-shadow: 0 0 6px rgba(137,180,250,0.4); }
+}
+
 .logo-icon {
-  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-spin {
   color: #89b4fa;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: logo-breathe 3.5s ease-in-out infinite,
+             logo-rotate 3s linear infinite;
+}
+
+.app-logo:hover .logo-spin {
+  animation: logo-charge 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
 }
 
 .logo-text {
@@ -351,7 +383,7 @@ select.form-input option {
 
 /* ── Light theme overrides ── */
 .light .app-header          { background: #ffffff; border-color: transparent; box-shadow: 0 1px 4px rgba(76,79,105,0.12); }
-.light .logo-icon           { color: #1e66f5; }
+.light .logo-spin { color: #1e66f5; }
 .light .logo-text           { color: #1e66f5; }
 .light .logo-version        { background: #e0e4f0; color: #5c5f77; }
 .light .theme-toggle        { border-color: #ccd0da; color: #6c6f85; }
