@@ -92,7 +92,14 @@ export default function QueryEditor({
           theme={theme === 'light' ? 'light' : oneDark}
           extensions={[sql(), EditorView.lineWrapping]}
           onChange={onQueryChange}
-          basicSetup={{ lineNumbers: true, foldGutter: false, highlightActiveLine: true }}
+          basicSetup={{
+            lineNumbers: true,
+            foldGutter: false,
+            highlightActiveLine: true,
+            autocompletion: true,
+            bracketMatching: true,
+            closeBrackets: true,
+          }}
         />
       </div>
 

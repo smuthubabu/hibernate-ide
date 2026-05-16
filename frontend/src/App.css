@@ -431,3 +431,102 @@ select.form-input option {
 .light .path-section-label  { color: #8c8fa1; }
 .light .path-textarea       { background: #eff1f5; border-color: #ccd0da; color: #4c4f69; }
 .light .path-error          { color: #d20f39; }
+
+/* ConnectionPanel */
+.light .connection-panel            { border-color: #ccd0da; }
+.light .panel-header                { background: #e6e9ef; }
+.light .panel-header:hover          { background: #dce0e8; }
+.light .panel-title                 { color: #1e66f5; }
+.light .panel-toggle                { color: #8c8fa1; }
+.light .panel-body                  { background: #eff1f5; }
+.light .preset-btn                  { background: #ccd0da; color: #179299; }
+.light .preset-btn:hover            { background: #bcc0cc; }
+.light .test-result.ok              { background: #dff0e8; color: #40a02b; }
+.light .test-result.fail            { background: #fce8ec; color: #d20f39; }
+.light .error-msg                   { color: #d20f39; }
+.light .conn-list                   { border-color: #ccd0da; }
+.light .conn-list-title             { color: #8c8fa1; }
+.light .conn-item:hover             { background: #dce0e8; }
+.light .conn-item.active            { background: #d5e3f7; }
+.light .conn-name                   { color: #4c4f69; }
+.light .conn-dot                    { color: #40a02b; }
+.light .conn-remove                 { color: #acb0be; }
+.light .conn-remove:hover           { color: #d20f39; }
+.light .profiles-title              { color: #8c8fa1; }
+.light .profile-name                { color: #1e66f5; }
+.light .profile-name:hover          { color: #4c4f69; }
+.light .profile-paths-badge         { background: #ccd0da; color: #8c8fa1; }
+.light .profile-connect-btn         { background: #dff0e8; color: #40a02b; }
+.light .profile-connect-btn:hover:not(:disabled) { background: #c8e6d5; }
+.light .profile-delete-btn          { color: #acb0be; }
+.light .profile-delete-btn:hover    { color: #d20f39; }
+.light .profiles-divider            { border-color: #ccd0da; }
+.light .save-msg                    { color: #40a02b; }
+
+/* QueryEditor Run button */
+.light .run-btn                     { background: #40a02b; color: #eff1f5; }
+.light .run-btn:hover               { background: #179299; }
+.light .run-btn:disabled            { background: #ccd0da; color: #8c8fa1; }
+
+/* SchemaExplorer / Tables tab */
+.light .schema-explorer.empty       { color: #acb0be; }
+.light .schema-toolbar              { background: #e6e9ef; border-color: #ccd0da; }
+.light .schema-title                { color: #8c8fa1; }
+.light .refresh-btn                 { color: #8c8fa1; }
+.light .refresh-btn:hover           { color: #4c4f69; }
+.light .schema-loading              { color: #179299; }
+.light .schema-error                { color: #d20f39; }
+.light .load-path-toggle            { color: #1e66f5; }
+.light .load-path-toggle:hover      { background: #dce0e8; }
+.light .schema-explorer             { background: #eff1f5; }
+.light .tree-scroll                 { background: #eff1f5; }
+.light .tree-section                { border-color: #dce0e8; }
+.light .section-header              { background: #e6e9ef; border-color: #ccd0da; }
+.light .section-title               { color: #8c8fa1; }
+.light .entity-node                 { border-color: #ccd0da; }
+.light .entity-header:hover         { background: #dce0e8; }
+.light .entity-icon                 { color: #8839ef; }
+.light .entity-name                 { color: #4c4f69; }
+.light .entity-body                 { background: #eff1f5; border-color: #ccd0da; }
+.light .entity-meta                 { color: #acb0be; }
+.light .entity-prop:hover,
+.light .entity-assoc:hover          { background: #dce0e8; }
+.light .entity-prop.pk .prop-name   { color: #df8e1d; }
+.light .prop-icon                   { color: #acb0be; }
+.light .assoc-icon                  { color: #179299; }
+.light .prop-name                   { color: #5c5f77; }
+.light .prop-type                   { color: #8c8fa1; }
+.light .table-tree                  { background: #eff1f5; }
+.light .table-node                  { border-color: #ccd0da; }
+.light .table-header:hover          { background: #dce0e8; }
+.light .tree-arrow                  { color: #8c8fa1; }
+.light .table-icon                  { color: #1e66f5; }
+.light .table-name                  { color: #4c4f69; }
+.light .table-action-btn            { background: #ccd0da; color: #8c8fa1; }
+.light .table-action-btn:hover      { color: #40a02b; background: #d5f0db; }
+.light .table-action-btn.hbm-btn:hover { color: #df8e1d; background: #f5ead5; }
+.light .column-list                 { background: #eff1f5; border-color: #ccd0da; }
+.light .row-count                   { color: #acb0be; }
+.light .column-item:hover           { background: #dce0e8; }
+.light .col-icon                    { color: #acb0be; }
+.light .col-icon.pk                 { color: #df8e1d; }
+.light .col-icon.nullable           { color: #bcc0cc; }
+.light .col-name                    { color: #4c4f69; }
+.light .col-type                    { color: #8c8fa1; }
+.light .path-input                  { background: #eff1f5; border-color: #ccd0da; color: #4c4f69; }
+.light .path-input::placeholder     { color: #acb0be; }
+.light .hbm-editor                  { background: #e6e9ef; border-color: #ccd0da; color: #40a02b; }
+.light .modal-note                  { color: #8c8fa1; }
+.light .modal-note strong           { color: #df8e1d; }
+
+/* QueryHistory tab */
+.light .query-history.empty         { color: #acb0be; }
+.light .history-item                { border-color: #dce0e8; }
+.light .history-item:hover          { background: #dce0e8; }
+.light .history-item.failed         { border-left-color: #d20f39; }
+.light .history-status              { color: #40a02b; }
+.light .history-item.failed .history-status { color: #d20f39; }
+.light .history-conn                { color: #1e66f5; }
+.light .history-time                { color: #acb0be; }
+.light .history-query               { color: #4c4f69; }
+.light .history-stats               { color: #8c8fa1; }
