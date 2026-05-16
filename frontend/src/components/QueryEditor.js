@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { sql, StandardSQL } from '@codemirror/lang-sql';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { EditorView } from '@codemirror/view';
 import { autocompletion } from '@codemirror/autocomplete';
-import { queryApi } from '../services/api';
+import { queryApi, schemaApi } from '../services/api';
 import './QueryEditor.css';
 
 export default function QueryEditor({
@@ -17,6 +17,42 @@ export default function QueryEditor({
   const [sqlLoading, setSqlLoading] = useState(false);
   const [sqlError, setSqlError]     = useState('');
   const [copied, setCopied]         = useState(false);
+  const [sqlSchema, setSqlSchema]   = useState({});
+  const cancelRef                   = useRef(false);
+
+  useEffect(() => {
+    cancelRef.current = false;
+    if (!activeConnection) { setSqlSchema({}); return; }
+
+    (async () => {
+      try {
+        const tablesRes = await schemaApi.getTables(activeConnection.id);
+        const tables = (tablesRes.data.data || []).slice(0, 120);
+        if (cancelRef.current) return;
+
+        // Phase 1: table names immediately (columns = [])
+        const schema = {};
+        tables.forEach(t => { schema[t.tableName] = []; });
+        setSqlSchema({ ...schema });
+
+        // Phase 2: fetch all columns in parallel
+        const details = await Promise.allSettled(
+          tables.map(t => schemaApi.getTableDetail(activeConnection.id, t.tableName))
+        );
+        if (cancelRef.current) return;
+
+        details.forEach((r, i) => {
+          if (r.status === 'fulfilled') {
+            schema[tables[i].tableName] =
+              (r.value.data.data?.columns || []).map(c => c.columnName);
+          }
+        });
+        setSqlSchema({ ...schema });
+      } catch (_) { /* schema fetch failure doesn't break the editor */ }
+    })();
+
+    return () => { cancelRef.current = true; };
+  }, [activeConnection]);
 
   const execute = useCallback(async () => {
     if (!activeConnection) return;
@@ -58,10 +94,10 @@ export default function QueryEditor({
   }, [execute]);
 
   const extensions = useMemo(() => [
-    sql({ dialect: StandardSQL, upperCaseKeywords: false }),
+    sql({ dialect: StandardSQL, schema: sqlSchema, upperCaseKeywords: false }),
     EditorView.lineWrapping,
-    autocompletion({ activateOnTyping: true, maxRenderedOptions: 20 }),
-  ], []);
+    autocompletion({ activateOnTyping: true, maxRenderedOptions: 30 }),
+  ], [sqlSchema]);
 
   return (
     <div className="query-editor" onKeyDown={handleKeyDown}>
