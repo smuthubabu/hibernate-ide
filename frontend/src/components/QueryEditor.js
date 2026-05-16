@@ -9,7 +9,7 @@ import './QueryEditor.css';
 export default function QueryEditor({
   activeConnection, currentQuery, onQueryChange, onSetSqlQuery,
   onExecuting, onQueryExecuted,
-  queryType, onQueryTypeChange,
+  queryType, onQueryTypeChange, theme,
 }) {
   const [maxResults, setMaxResults] = useState(500);
   const [sqlModal, setSqlModal]     = useState(null);   // generated SQL string
@@ -89,7 +89,7 @@ export default function QueryEditor({
         <CodeMirror
           value={currentQuery}
           height="100%"
-          theme={oneDark}
+          theme={theme === 'light' ? 'light' : oneDark}
           extensions={[sql(), EditorView.lineWrapping]}
           onChange={onQueryChange}
           basicSetup={{ lineNumbers: true, foldGutter: false, highlightActiveLine: true }}

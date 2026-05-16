@@ -161,6 +161,7 @@ function App() {
             onQueryExecuted={handleQueryExecuted}
             queryType={queryType}
             onQueryTypeChange={setQueryType}
+            theme={theme}
           />
           <ResultsGrid result={queryResult} isExecuting={isExecuting} />
         </main>
