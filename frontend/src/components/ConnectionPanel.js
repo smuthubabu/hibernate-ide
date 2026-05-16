@@ -7,7 +7,7 @@ const PRESETS = [
   { label: 'MySQL',        jdbcUrl: 'jdbc:mysql://localhost:3306/mydb',                 username: 'root', password: '', driverClass: '', hidden: true },
   { label: 'PostgreSQL',   jdbcUrl: 'jdbc:postgresql://localhost:5432/mydb',            username: 'postgres', password: '', driverClass: '', hidden: true },
   { label: 'HSQLDB',       jdbcUrl: 'jdbc:hsqldb:mem:testdb',                           username: 'SA', password: '', driverClass: '', hidden: true },
-  { label: 'DB2 Type 2',  jdbcUrl: 'jdbc:db2:testdb',                                  username: 'db2inst1', password: '', driverClass: 'com.ibm.db2.jcc.DB2Driver', note: 'Uses db2jcc.jar with a cataloged database alias. JCC resolves the alias from the local DB2 directory — no native libs needed. If you get a db2jcct2 error, the alias is not cataloged; switch to Type 4.' },
+  { label: 'DB2 Type 2',  jdbcUrl: 'jdbc:db2:testdb',                                  username: 'db2inst1', password: '', driverClass: 'com.ibm.db2.jcc.DB2Driver', note: 'Requires DB2 client installed on this machine (provides libdb2jcct2). The alias must also be cataloged locally. Only use this when running Hibernate IDE on the DB2 server or a machine with full DB2 client. Use Type 4 for remote connections.' },
   { label: 'DB2 Type 4',  jdbcUrl: 'jdbc:db2://localhost:50000/testdb',                username: 'db2inst1', password: '', driverClass: '' },
 ];
 
