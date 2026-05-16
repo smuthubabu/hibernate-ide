@@ -18,37 +18,51 @@ export default function QueryEditor({
   const [sqlError, setSqlError]     = useState('');
   const [copied, setCopied]         = useState(false);
   const [sqlSchema, setSqlSchema]   = useState({});
+  const [hqlSchema, setHqlSchema]   = useState({});
   const cancelRef                   = useRef(false);
 
   useEffect(() => {
     cancelRef.current = false;
-    if (!activeConnection) { setSqlSchema({}); return; }
+    if (!activeConnection) { setSqlSchema({}); setHqlSchema({}); return; }
 
     (async () => {
       try {
+        // ── SQL schema: tables then columns ──
         const tablesRes = await schemaApi.getTables(activeConnection.id);
         const tables = (tablesRes.data.data || []).slice(0, 120);
         if (cancelRef.current) return;
 
-        // Phase 1: table names immediately (columns = [])
-        const schema = {};
-        tables.forEach(t => { schema[t.tableName] = []; });
-        setSqlSchema({ ...schema });
+        const sqlSch = {};
+        tables.forEach(t => { sqlSch[t.tableName] = []; });
+        setSqlSchema({ ...sqlSch });
 
-        // Phase 2: fetch all columns in parallel
         const details = await Promise.allSettled(
           tables.map(t => schemaApi.getTableDetail(activeConnection.id, t.tableName))
         );
         if (cancelRef.current) return;
-
         details.forEach((r, i) => {
-          if (r.status === 'fulfilled') {
-            schema[tables[i].tableName] =
+          if (r.status === 'fulfilled')
+            sqlSch[tables[i].tableName] =
               (r.value.data.data?.columns || []).map(c => c.columnName);
-          }
         });
-        setSqlSchema({ ...schema });
-      } catch (_) { /* schema fetch failure doesn't break the editor */ }
+        setSqlSchema({ ...sqlSch });
+      } catch (_) {}
+
+      try {
+        // ── HQL schema: entity names + properties/associations ──
+        const entRes = await schemaApi.getEntities(activeConnection.id);
+        if (cancelRef.current) return;
+        const entities = entRes.data.data || [];
+        const hqlSch = {};
+        entities.forEach(e => {
+          const props = [];
+          if (e.idProperty) props.push(e.idProperty.name);
+          (e.properties   || []).forEach(p => props.push(p.name));
+          (e.associations || []).forEach(a => props.push(a.name));
+          hqlSch[e.entityName] = props;
+        });
+        setHqlSchema(hqlSch);
+      } catch (_) {}
     })();
 
     return () => { cancelRef.current = true; };
@@ -94,10 +108,10 @@ export default function QueryEditor({
   }, [execute]);
 
   const extensions = useMemo(() => [
-    sql({ dialect: StandardSQL, schema: sqlSchema, upperCaseKeywords: false }),
+    sql({ dialect: StandardSQL, schema: queryType === 'HQL' ? hqlSchema : sqlSchema, upperCaseKeywords: false }),
     EditorView.lineWrapping,
     autocompletion({ activateOnTyping: true, maxRenderedOptions: 30 }),
-  ], [sqlSchema]);
+  ], [sqlSchema, hqlSchema, queryType]);
 
   return (
     <div className="query-editor" onKeyDown={handleKeyDown}>
