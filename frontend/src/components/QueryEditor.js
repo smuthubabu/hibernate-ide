@@ -5,6 +5,7 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { EditorView } from '@codemirror/view';
 import { autocompletion } from '@codemirror/autocomplete';
 import { queryApi, schemaApi } from '../services/api';
+import './QueryEditor.css';
 
 const HQL_KEYWORDS = [
   'select','from','where','join','fetch','left','right','inner','outer','on',
@@ -25,7 +26,6 @@ function buildHqlSource(schema) {
     return { from: word.from, options: allOpts, validFor: /^\w*$/ };
   };
 }
-import './QueryEditor.css';
 
 export default function QueryEditor({
   activeConnection, currentQuery, onQueryChange, onSetSqlQuery,
