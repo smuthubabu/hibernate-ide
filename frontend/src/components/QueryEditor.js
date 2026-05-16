@@ -5,6 +5,26 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { EditorView } from '@codemirror/view';
 import { autocompletion } from '@codemirror/autocomplete';
 import { queryApi, schemaApi } from '../services/api';
+
+const HQL_KEYWORDS = [
+  'select','from','where','join','fetch','left','right','inner','outer','on',
+  'order','by','group','having','distinct','as','new','update','delete','set',
+  'in','not','and','or','is','null','between','like','count','sum','min','max',
+  'avg','asc','desc','all','any','exists','elements','indices','with','true','false','empty',
+].map(k => ({ label: k, type: 'keyword' }));
+
+function buildHqlSource(schema) {
+  const entityOpts = Object.entries(schema).flatMap(([entity, props]) => [
+    { label: entity, type: 'class', detail: 'entity', boost: 5 },
+    ...props.map(p => ({ label: p, type: 'property', detail: entity })),
+  ]);
+  const allOpts = [...entityOpts, ...HQL_KEYWORDS];
+  return (ctx) => {
+    const word = ctx.matchBefore(/\w*/);
+    if (!word || (word.from === word.to && !ctx.explicit)) return null;
+    return { from: word.from, options: allOpts, validFor: /^\w*$/ };
+  };
+}
 import './QueryEditor.css';
 
 export default function QueryEditor({
@@ -107,11 +127,20 @@ export default function QueryEditor({
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); execute(); }
   }, [execute]);
 
-  const extensions = useMemo(() => [
-    sql({ dialect: StandardSQL, schema: queryType === 'HQL' ? hqlSchema : sqlSchema, upperCaseKeywords: false }),
-    EditorView.lineWrapping,
-    autocompletion({ activateOnTyping: true, maxRenderedOptions: 30 }),
-  ], [sqlSchema, hqlSchema, queryType]);
+  const extensions = useMemo(() => {
+    if (queryType === 'HQL') {
+      return [
+        sql({ dialect: StandardSQL, upperCaseKeywords: false }),
+        EditorView.lineWrapping,
+        autocompletion({ activateOnTyping: true, maxRenderedOptions: 30, override: [buildHqlSource(hqlSchema)] }),
+      ];
+    }
+    return [
+      sql({ dialect: StandardSQL, schema: sqlSchema, upperCaseKeywords: false }),
+      EditorView.lineWrapping,
+      autocompletion({ activateOnTyping: true, maxRenderedOptions: 30 }),
+    ];
+  }, [sqlSchema, hqlSchema, queryType]);
 
   return (
     <div className="query-editor" onKeyDown={handleKeyDown}>
