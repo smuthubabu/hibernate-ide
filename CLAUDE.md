@@ -106,4 +106,4 @@ The frontend dev proxy (`"proxy": "http://localhost:8080"` in `package.json`) me
 - `hibernate.connection.pool_size=5` and `hibernate.current_session_context_class=thread` are always set.
 - Spring Boot's DataSource and JPA autoconfiguration are **excluded** — Hibernate is managed entirely manually.
 - The `dom4j:dom4j:1.6.1` dependency (not `org.dom4j`) is required by Hibernate 3.
-- DB2 Type 2 (`jdbc:db2:ALIAS`) requires IBM DB2 client native libraries on the host OS; the JCC JAR alone only supports Type 4.
+- DB2 Type 2 (`jdbc:db2:ALIAS`) uses `db2jcc.jar` with a cataloged database alias — JCC resolves the alias from the local DB2 directory and does not need native libs. If the alias is not cataloged you will get a `db2jcct2 UnsatisfiedLinkError`; in that case use Type 4 (`jdbc:db2://host:port/db`) which is always pure Java.

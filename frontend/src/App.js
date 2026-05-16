@@ -12,13 +12,15 @@ function App() {
   const [collapsed, setCollapsed]       = useState(false);
   const savedWidth                      = useRef(280);
   const dragging                        = useRef(false);
+  const didDrag                         = useRef(false);
 
   useEffect(() => {
     const onMove = (e) => {
       if (!dragging.current || collapsed) return;
       const next = Math.min(600, Math.max(180, e.clientX));
-      setSidebarWidth(next);
+      if (Math.abs(next - savedWidth.current) > 5) didDrag.current = true;
       savedWidth.current = next;
+      setSidebarWidth(next);
     };
     const onUp = () => { dragging.current = false; document.body.style.cursor = ''; };
     document.addEventListener('mousemove', onMove);
@@ -118,9 +120,6 @@ function App() {
 
       <div className="app-body">
         <aside className="sidebar" style={{ width: sidebarWidth }}>
-          <div className="sidebar-collapse-bar">
-            <button className="sidebar-collapse-btn" onClick={toggleCollapse} title="Collapse panel">◀</button>
-          </div>
           <ConnectionPanel
             activeConnection={activeConnection}
             onConnectionChange={handleConnectionChange}
@@ -145,11 +144,16 @@ function App() {
         </aside>
 
         <div className={`resize-handle ${collapsed ? 'collapsed' : ''}`}
-          onMouseDown={() => { if (!collapsed) { dragging.current = true; document.body.style.cursor = 'col-resize'; } }}
-          onClick={() => { if (collapsed) toggleCollapse(); }}
-          title={collapsed ? 'Expand panel' : undefined}
+          onMouseDown={() => { if (!collapsed) { dragging.current = true; didDrag.current = false; document.body.style.cursor = 'col-resize'; } }}
+          onClick={() => { if (!didDrag.current) toggleCollapse(); }}
+          title={collapsed ? 'Expand panel' : 'Collapse panel'}
         >
-          {collapsed && <span className="expand-arrow">▶</span>}
+          {collapsed && (
+            <span className="handle-arrow"
+              onMouseDown={e => e.stopPropagation()}
+              onClick={e => { e.stopPropagation(); toggleCollapse(); }}
+            >▶</span>
+          )}
         </div>
         <main className="main-area">
           <QueryEditor

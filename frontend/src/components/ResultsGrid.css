@@ -86,14 +86,33 @@
 
 .results-time {
   color: #6c7086;
+}
+
+.export-btns {
+  display: flex;
+  gap: 4px;
   margin-left: auto;
 }
+
+.export-btn {
+  background: #313244;
+  border: 1px solid #45475a;
+  color: #a6adc8;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.export-btn:hover { background: #89b4fa; color: #1e1e2e; border-color: #89b4fa; }
 
 .pagination {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-left: auto;
 }
 
 .page-btn {

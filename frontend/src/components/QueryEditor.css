@@ -68,7 +68,7 @@
 }
 
 .run-btn {
-  background: #a6e3a1;
+  background: #89b4fa;
   color: #1e1e2e;
   border: none;
   padding: 5px 16px;
@@ -80,7 +80,7 @@
   transition: background 0.15s;
 }
 
-.run-btn:hover { background: #94e2d5; }
+.run-btn:hover { background: #b4befe; }
 .run-btn:disabled { background: #45475a; color: #6c7086; cursor: not-allowed; }
 
 .show-sql-btn {

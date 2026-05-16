@@ -3,6 +3,33 @@ import './ResultsGrid.css';
 
 const PAGE_SIZE = 50;
 
+function triggerDownload(filename, type, content) {
+  const blob = new Blob([content], { type });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+}
+
+function toCsv(columns, rows) {
+  const esc = v => {
+    if (v === null || v === undefined) return '';
+    const s = String(v);
+    return (s.includes(',') || s.includes('"') || s.includes('\n') || s.includes('\r'))
+      ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  return [columns.map(esc).join(','), ...rows.map(r => r.map(esc).join(','))].join('\r\n');
+}
+
+function toJson(columns, rows) {
+  return JSON.stringify(
+    rows.map(r => Object.fromEntries(columns.map((c, i) => [c, r[i]]))),
+    null, 2
+  );
+}
+
 export default function ResultsGrid({ result, isExecuting }) {
   const [page, setPage] = useState(0);
 
@@ -60,6 +87,18 @@ export default function ResultsGrid({ result, isExecuting }) {
       <div className="results-info-bar">
         <span className="results-count">{rowCount} row{rowCount !== 1 ? 's' : ''}</span>
         {executionTimeMs !== undefined && <span className="results-time">{executionTimeMs}ms</span>}
+        <div className="export-btns">
+          <button className="export-btn"
+            title={`Export all ${rows.length} rows as CSV`}
+            onClick={() => triggerDownload('results.csv', 'text/csv', toCsv(columns, rows))}>
+            CSV
+          </button>
+          <button className="export-btn"
+            title={`Export all ${rows.length} rows as JSON`}
+            onClick={() => triggerDownload('results.json', 'application/json', toJson(columns, rows))}>
+            JSON
+          </button>
+        </div>
         {totalPages > 1 && (
           <div className="pagination">
             <button onClick={() => setPage(0)}          disabled={page === 0}               className="page-btn">«</button>

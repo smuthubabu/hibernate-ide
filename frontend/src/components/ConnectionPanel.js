@@ -4,11 +4,11 @@ import './ConnectionPanel.css';
 
 const PRESETS = [
   { label: 'H2 In-Memory', jdbcUrl: 'jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL', username: 'sa', password: '', driverClass: 'org.h2.Driver' },
-  { label: 'MySQL',        jdbcUrl: 'jdbc:mysql://localhost:3306/mydb',                 username: 'root', password: '', driverClass: '' },
-  { label: 'PostgreSQL',   jdbcUrl: 'jdbc:postgresql://localhost:5432/mydb',            username: 'postgres', password: '', driverClass: '' },
-  { label: 'HSQLDB',       jdbcUrl: 'jdbc:hsqldb:mem:testdb',                           username: 'SA', password: '', driverClass: '' },
-  { label: 'DB2 Type 2',  jdbcUrl: 'jdbc:db2:testdb',                                  username: 'db2inst1', password: 'password', driverClass: 'com.ibm.db2.jcc.DB2Driver' },
-  { label: 'DB2 Type 4',  jdbcUrl: 'jdbc:db2://localhost:50000/testdb',                username: 'db2inst1', password: 'password', driverClass: '' },
+  { label: 'MySQL',        jdbcUrl: 'jdbc:mysql://localhost:3306/mydb',                 username: 'root', password: '', driverClass: '', hidden: true },
+  { label: 'PostgreSQL',   jdbcUrl: 'jdbc:postgresql://localhost:5432/mydb',            username: 'postgres', password: '', driverClass: '', hidden: true },
+  { label: 'HSQLDB',       jdbcUrl: 'jdbc:hsqldb:mem:testdb',                           username: 'SA', password: '', driverClass: '', hidden: true },
+  { label: 'DB2 Type 2',  jdbcUrl: 'jdbc:db2:testdb',                                  username: 'db2inst1', password: '', driverClass: 'com.ibm.db2.jcc.DB2Driver', note: 'Uses db2jcc.jar with a cataloged database alias. JCC resolves the alias from the local DB2 directory — no native libs needed. If you get a db2jcct2 error, the alias is not cataloged; switch to Type 4.' },
+  { label: 'DB2 Type 4',  jdbcUrl: 'jdbc:db2://localhost:50000/testdb',                username: 'db2inst1', password: '', driverClass: '' },
 ];
 
 const emptyForm = { name: '', jdbcUrl: '', username: '', password: '', driverClass: '', dialect: '', showSql: true };
@@ -195,8 +195,11 @@ export default function ConnectionPanel({ activeConnection, onConnectionChange }
           )}
 
           <div className="presets">
-            {PRESETS.map(p => (
-              <button key={p.label} className="preset-btn" onClick={() => applyPreset(p)}>{p.label}</button>
+            {PRESETS.filter(p => !p.hidden).map(p => (
+              <span key={p.label} className="preset-wrap">
+                <button className="preset-btn" onClick={() => applyPreset(p)}>{p.label}</button>
+                {p.note && <span className="preset-note-icon" data-tooltip={p.note}>ⓘ</span>}
+              </span>
             ))}
           </div>
 
@@ -233,9 +236,9 @@ export default function ConnectionPanel({ activeConnection, onConnectionChange }
               onChange={e => setForm(f => ({ ...f, dialect: e.target.value }))}>
               <option value="">Auto-detect</option>
               <option value="org.hibernate.dialect.H2Dialect">H2</option>
-              <option value="org.hibernate.dialect.MySQL5Dialect">MySQL 5</option>
-              <option value="org.hibernate.dialect.PostgreSQLDialect">PostgreSQL</option>
-              <option value="org.hibernate.dialect.HSQLDialect">HSQLDB</option>
+              <option value="org.hibernate.dialect.MySQL5Dialect" style={{ display: 'none' }}>MySQL 5</option>
+              <option value="org.hibernate.dialect.PostgreSQLDialect" style={{ display: 'none' }}>PostgreSQL</option>
+              <option value="org.hibernate.dialect.HSQLDialect" style={{ display: 'none' }}>HSQLDB</option>
               <option value="org.hibernate.dialect.Oracle9iDialect">Oracle 9i+</option>
               <option value="org.hibernate.dialect.SQLServerDialect">SQL Server</option>
               <option value="org.hibernate.dialect.DB2Dialect">DB2 (LUW)</option>

@@ -32,7 +32,7 @@ export default function QueryEditor({
   onExecuting, onQueryExecuted,
   queryType, onQueryTypeChange, theme,
 }) {
-  const [maxResults, setMaxResults] = useState(500);
+  const [maxResults, setMaxResults] = useState(100);
   const [sqlModal, setSqlModal]     = useState(null);   // generated SQL string
   const [sqlLoading, setSqlLoading] = useState(false);
   const [sqlError, setSqlError]     = useState('');
@@ -163,7 +163,7 @@ export default function QueryEditor({
           <label className="limit-label">
             Limit
             <input type="number" className="limit-input" value={maxResults} min={1} max={5000}
-              onChange={e => setMaxResults(parseInt(e.target.value, 10) || 500)} />
+              onChange={e => setMaxResults(parseInt(e.target.value, 10) || 100)} />
           </label>
           <button className="run-btn" onClick={execute} disabled={!activeConnection} title="Run (Ctrl+Enter)">
             ▶ Run
