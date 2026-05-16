@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
-import { sql } from '@codemirror/lang-sql';
+import { sql, StandardSQL } from '@codemirror/lang-sql';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { EditorView } from '@codemirror/view';
+import { autocompletion } from '@codemirror/autocomplete';
 import { queryApi } from '../services/api';
 import './QueryEditor.css';
 
@@ -56,6 +57,12 @@ export default function QueryEditor({
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); execute(); }
   }, [execute]);
 
+  const extensions = useMemo(() => [
+    sql({ dialect: StandardSQL, upperCaseKeywords: false }),
+    EditorView.lineWrapping,
+    autocompletion({ activateOnTyping: true, maxRenderedOptions: 20 }),
+  ], []);
+
   return (
     <div className="query-editor" onKeyDown={handleKeyDown}>
       <div className="editor-toolbar">
@@ -90,13 +97,13 @@ export default function QueryEditor({
           value={currentQuery}
           height="100%"
           theme={theme === 'light' ? 'light' : oneDark}
-          extensions={[sql(), EditorView.lineWrapping]}
+          extensions={extensions}
           onChange={onQueryChange}
           basicSetup={{
             lineNumbers: true,
             foldGutter: false,
             highlightActiveLine: true,
-            autocompletion: true,
+            autocompletion: false,
             bracketMatching: true,
             closeBrackets: true,
           }}
