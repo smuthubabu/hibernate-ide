@@ -226,9 +226,9 @@
 }
 
 .profile-connect-btn {
-  background: #1e3a2e;
+  background: #1e2a40;
   border: none;
-  color: #a6e3a1;
+  color: #89b4fa;
   font-size: 10px;
   padding: 2px 6px;
   border-radius: 3px;
@@ -236,7 +236,7 @@
   flex-shrink: 0;
   transition: background 0.15s;
 }
-.profile-connect-btn:hover:not(:disabled) { background: #2a5040; }
+.profile-connect-btn:hover:not(:disabled) { background: #263550; }
 .profile-connect-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .profile-delete-btn {

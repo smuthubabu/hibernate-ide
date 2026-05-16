@@ -289,7 +289,7 @@
   transition: all 0.15s;
 }
 
-.table-action-btn:hover { color: #a6e3a1; background: #1e3a2e; }
+.table-action-btn:hover { color: #89b4fa; background: #1e2a40; }
 .table-action-btn.hbm-btn:hover { color: #f9e2af; background: #3a2e1a; }
 
 .column-list {
@@ -401,7 +401,7 @@
   width: 100%;
   background: #181825;
   border: 1px solid #313244;
-  color: #a6e3a1;
+  color: #cdd6f4;
   padding: 10px;
   font-size: 12px;
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
