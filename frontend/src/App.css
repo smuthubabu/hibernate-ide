@@ -97,7 +97,7 @@
 }
 
 .status-connected {
-  color: #a6e3a1;
+  color: #89b4fa;
 }
 
 .status-disconnected {
@@ -355,7 +355,7 @@ select.form-input option {
 .light .logo-text           { color: #1e66f5; }
 .light .logo-version        { background: #e0e4f0; color: #5c5f77; }
 .light .theme-toggle        { border-color: #ccd0da; color: #6c6f85; }
-.light .status-connected    { color: #40a02b; }
+.light .status-connected    { color: #1e66f5; }
 .light .status-disconnected { color: #8c8fa1; }
 .light .status-bar          { background: #1e66f5; box-shadow: 0 -1px 3px rgba(30,102,245,0.15); }
 
@@ -469,7 +469,7 @@ select.form-input option {
 .light .conn-item:hover             { background: #eceef5; }
 .light .conn-item.active            { background: #dce8fc; }
 .light .conn-name                   { color: #4c4f69; }
-.light .conn-dot                    { color: #40a02b; }
+.light .conn-dot                    { color: #1e66f5; }
 .light .conn-remove                 { color: #ccd0da; }
 .light .conn-remove:hover           { color: #d20f39; }
 .light .profiles-title              { color: #8c8fa1; }
