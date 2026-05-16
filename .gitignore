@@ -1,0 +1,17 @@
+# Build outputs
+backend/target/
+frontend/build/
+frontend/node_modules/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Secrets / local state
+backend/hibernate-ide-profiles.json
+backend/logs/
+.claude/
+
+# OS
+.DS_Store

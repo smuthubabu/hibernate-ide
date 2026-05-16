@@ -1,0 +1,222 @@
+.connection-panel {
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  background: #1e1e2e;
+}
+
+.panel-header:hover { background: #262637; }
+
+.panel-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #89b4fa;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.panel-toggle {
+  color: #6c7086;
+  font-size: 12px;
+}
+
+.panel-body {
+  padding: 10px 12px;
+  background: #1a1a2e;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.preset-btn {
+  background: #313244;
+  color: #89dceb;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.preset-btn:hover { background: #45475a; }
+
+.form-row {
+  display: flex;
+  gap: 8px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.btn-row {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.test-result {
+  font-size: 11px;
+  padding: 5px 8px;
+  border-radius: 3px;
+  margin: 6px 0;
+}
+
+.test-result.ok  { background: #1e3a2e; color: #a6e3a1; }
+.test-result.fail { background: #3a1e2e; color: #f38ba8; }
+
+.error-msg {
+  font-size: 11px;
+  color: #f38ba8;
+  padding: 4px 0;
+}
+
+.conn-list {
+  border-top: 1px solid #313244;
+  padding: 4px 0;
+}
+
+.conn-list-title {
+  font-size: 10px;
+  color: #6c7086;
+  padding: 6px 12px 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.conn-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.conn-item:hover { background: #262637; }
+.conn-item.active { background: #1d2f4a; }
+
+.conn-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.conn-dot {
+  font-size: 8px;
+  color: #a6e3a1;
+}
+
+.conn-name {
+  font-size: 12px;
+  color: #cdd6f4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.conn-remove {
+  background: transparent;
+  border: none;
+  color: #45475a;
+  font-size: 11px;
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.conn-remove:hover { color: #f38ba8; }
+
+/* Saved profiles */
+.profiles-section {
+  margin-bottom: 8px;
+}
+
+.profiles-title {
+  font-size: 10px;
+  color: #6c7086;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 0;
+}
+
+.profile-name {
+  flex: 1;
+  font-size: 11px;
+  color: #89b4fa;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-name:hover { color: #cdd6f4; }
+
+.profile-paths-badge {
+  font-size: 9px;
+  color: #6c7086;
+  background: #313244;
+  padding: 1px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.profile-connect-btn {
+  background: #1e3a2e;
+  border: none;
+  color: #a6e3a1;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.profile-connect-btn:hover:not(:disabled) { background: #2a5040; }
+.profile-connect-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.profile-delete-btn {
+  background: transparent;
+  border: none;
+  color: #45475a;
+  font-size: 10px;
+  padding: 2px 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.profile-delete-btn:hover { color: #f38ba8; }
+
+.profiles-divider {
+  border-top: 1px solid #313244;
+  margin: 6px 0 8px;
+}
+
+.save-msg {
+  font-size: 11px;
+  color: #a6e3a1;
+  padding: 4px 0;
+}

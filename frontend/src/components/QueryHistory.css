@@ -1,0 +1,68 @@
+.query-history {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.query-history.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #45475a;
+  font-size: 11px;
+  padding: 20px;
+  text-align: center;
+}
+
+.history-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #26263a;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.history-item:hover { background: #262637; }
+.history-item.failed { border-left: 2px solid #f38ba8; }
+
+.history-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+
+.history-status {
+  font-size: 11px;
+  color: #a6e3a1;
+}
+
+.history-item.failed .history-status { color: #f38ba8; }
+
+.history-conn {
+  font-size: 10px;
+  color: #89b4fa;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.history-time {
+  font-size: 10px;
+  color: #45475a;
+  flex-shrink: 0;
+}
+
+.history-query {
+  font-size: 11px;
+  color: #cdd6f4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Consolas', 'Monaco', monospace;
+  margin-bottom: 2px;
+}
+
+.history-stats {
+  font-size: 10px;
+  color: #6c7086;
+}
