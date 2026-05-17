@@ -72,41 +72,24 @@
   gap: 8px;
 }
 
-@keyframes logo-breathe {
-  0%, 100% { text-shadow: 0 0 6px rgba(137,180,250,0.35); }
-  50%       { text-shadow: 0 0 14px rgba(137,180,250,0.9), 0 0 28px rgba(137,180,250,0.4); }
-}
-
-@keyframes logo-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes logo-charge {
-  0%   { transform: scale(1)    rotate(0deg);   filter: brightness(1);   text-shadow: 0 0 6px rgba(137,180,250,0.4); }
-  20%  { transform: scale(0.7)  rotate(-60deg); filter: brightness(0.5); text-shadow: none; }
-  55%  { transform: scale(1.55) rotate(210deg); filter: brightness(2.6); text-shadow: 0 0 24px #89b4fa, 0 0 48px rgba(137,180,250,0.6); }
-  80%  { transform: scale(1.12) rotate(345deg); filter: brightness(1.4); text-shadow: 0 0 12px rgba(137,180,250,0.7); }
-  100% { transform: scale(1)    rotate(360deg); filter: brightness(1);   text-shadow: 0 0 6px rgba(137,180,250,0.4); }
-}
-
 .logo-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-
-.logo-spin {
   color: #89b4fa;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: logo-breathe 3.5s ease-in-out infinite,
-             logo-rotate 3s linear infinite;
 }
 
-.app-logo:hover .logo-spin {
-  animation: logo-charge 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+@keyframes logo-scan {
+  0%   { transform: translateY(0);    opacity: 0;   }
+  8%   { opacity: 0.85; }
+  85%  { opacity: 0.6; }
+  95%  { opacity: 0; }
+  100% { transform: translateY(12px); opacity: 0;   }
+}
+
+.logo-scan {
+  animation: logo-scan 2s ease-in-out infinite;
 }
 
 .logo-text {
@@ -156,66 +139,65 @@
   transition: width 0.2s ease;
 }
 
-/* ── Resize handle (also collapse/expand toggle) ── */
+/* ── Resize handle (drag only) ── */
 .resize-handle {
-  width: 6px;
+  width: 4px;
   background: #26263a;
   cursor: col-resize;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s, width 0.2s ease;
-  overflow: visible;
-  position: relative;
+  transition: background 0.15s;
 }
 .resize-handle:hover { background: #45475a; }
 
-.resize-handle.collapsed {
-  width: 6px;
+/* ── GitHub-style panel toggle buttons ── */
+.sidebar-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 3px 4px;
+  border-bottom: 1px solid #313244;
+  flex-shrink: 0;
+}
+
+.panel-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #6c7086;
+  padding: 3px 5px;
+  border-radius: 4px;
   cursor: pointer;
-}
-
-/* When expanded, show a subtle ◀ chevron via pseudo-element on hover (no pointer-events interference) */
-.resize-handle:not(.collapsed):hover::after {
-  content: '◀';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 8px;
-  color: #89b4fa;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.handle-arrow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 16px;
-  height: 44px;
-  background: #45475a;
-  border: 1px solid #585b70;
-  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
-  color: #89b4fa;
-  pointer-events: auto;
+  transition: color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.panel-toggle-btn:hover { color: #cdd6f4; background: #313244; }
+
+.resize-handle.collapsed {
+  width: 28px;
+  cursor: default;
+  background: #1e1e2e;
+  border-right: 1px solid #313244;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.panel-expand-btn {
+  background: transparent;
+  border: none;
+  color: #6c7086;
+  padding: 3px 5px;
+  border-radius: 4px;
   cursor: pointer;
-  z-index: 10;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, background 0.15s;
 }
-.handle-arrow:hover {
-  background: #89b4fa;
-  color: #1e1e2e;
-  border-color: #89b4fa;
-  transform: translate(-50%, -50%) scaleY(1.08);
-}
+.panel-expand-btn:hover { color: #cdd6f4; background: #313244; }
 
 .sidebar-tabs {
   display: flex;
@@ -257,6 +239,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
 }
 
 /* ── Status bar ── */
@@ -383,7 +366,7 @@ select.form-input option {
 
 /* ── Light theme overrides ── */
 .light .app-header          { background: #ffffff; border-color: transparent; box-shadow: 0 1px 4px rgba(76,79,105,0.12); }
-.light .logo-spin { color: #1e66f5; }
+.light .logo-spin           { color: #1e66f5; }
 .light .logo-text           { color: #1e66f5; }
 .light .logo-version        { background: #e0e4f0; color: #5c5f77; }
 .light .theme-toggle        { border-color: #ccd0da; color: #6c6f85; }
@@ -392,11 +375,13 @@ select.form-input option {
 .light .status-bar          { background: #1e66f5; box-shadow: 0 -1px 3px rgba(30,102,245,0.15); }
 
 .light .sidebar             { background: #f4f6fb; }
-.light .resize-handle       { background: #e0e4ee; }
-.light .resize-handle:hover { background: #ccd0da; }
-.light .resize-handle.collapsed { background: #e0e4ee; }
-.light .handle-arrow        { background: #eceef5; border-color: #ccd0da; color: #1e66f5; box-shadow: 0 2px 6px rgba(76,79,105,0.18); }
-.light .handle-arrow:hover  { background: #1e66f5; color: #ffffff; border-color: #1e66f5; }
+.light .resize-handle         { background: #dce0e8; }
+.light .resize-handle:hover   { background: #bcc0cc; }
+.light .panel-toggle-btn:hover  { background: #e6e9ef; color: #4c4f69; }
+.light .resize-handle.collapsed  { background: #f4f6fb; border-color: #dce0e8; }
+.light .panel-expand-btn:hover   { background: #e6e9ef; color: #1e66f5; }
+.light .resize-pill           { background: #e6e9ef; border-color: #ccd0da; color: #5c5f77; box-shadow: 0 2px 8px rgba(76,79,105,0.18); }
+.light .resize-pill:hover     { background: #ccd0da; color: #1e66f5; }
 .light .sidebar-tabs        { border-color: #dce0e8; }
 .light .sidebar-tab         { color: #8c8fa1; }
 .light .sidebar-tab:hover   { color: #4c4f69; background: #eceef5; }
