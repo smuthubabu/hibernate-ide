@@ -92,6 +92,7 @@ function App() {
 
   const handleSchemaInsert = useCallback((snippet) => {
     setSqlQuery(prev => prev + (prev.trim() ? '\n' : '') + snippet);
+    setQueryType('SQL');
   }, []);
 
   const handleEntitySelect = useCallback((entityName) => {

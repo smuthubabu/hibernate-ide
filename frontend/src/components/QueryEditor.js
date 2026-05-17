@@ -32,14 +32,23 @@ export default function QueryEditor({
   onExecuting, onQueryExecuted,
   queryType, onQueryTypeChange, theme,
 }) {
-  const [maxResults, setMaxResults] = useState(100);
-  const [sqlModal, setSqlModal]     = useState(null);   // generated SQL string
-  const [sqlLoading, setSqlLoading] = useState(false);
-  const [sqlError, setSqlError]     = useState('');
-  const [copied, setCopied]         = useState(false);
-  const [sqlSchema, setSqlSchema]   = useState({});
-  const [hqlSchema, setHqlSchema]   = useState({});
-  const cancelRef                   = useRef(false);
+  const [maxResults, setMaxResults]   = useState(100);
+  const [sqlModal, setSqlModal]       = useState(null);
+  const [sqlLoading, setSqlLoading]   = useState(false);
+  const [sqlError, setSqlError]       = useState('');
+  const [copied, setCopied]           = useState(false);
+  const [sqlSchema, setSqlSchema]     = useState({});
+  const [hqlSchema, setHqlSchema]     = useState({});
+  const cancelRef    = useRef(false);
+  const selectionRef = useRef('');
+
+  const selTracker = useMemo(() =>
+    EditorView.updateListener.of(update => {
+      if (update.selectionSet || update.docChanged) {
+        const { from, to } = update.state.selection.main;
+        selectionRef.current = from !== to ? update.state.sliceDoc(from, to) : '';
+      }
+    }), []);
 
   useEffect(() => {
     cancelRef.current = false;
@@ -90,7 +99,8 @@ export default function QueryEditor({
 
   const execute = useCallback(async () => {
     if (!activeConnection) return;
-    const q = currentQuery.trim();
+    const sel = selectionRef.current.trim();
+    const q = sel || currentQuery.trim();
     if (!q) return;
     onExecuting();
     try {
@@ -102,7 +112,7 @@ export default function QueryEditor({
         onQueryExecuted({ success: false, message: payload.message }, q);
       }
     } catch (e) {
-      onQueryExecuted({ success: false, message: e.response?.data?.message || e.message }, currentQuery);
+      onQueryExecuted({ success: false, message: e.response?.data?.message || e.message }, q);
     }
   }, [activeConnection, currentQuery, queryType, maxResults, onExecuting, onQueryExecuted]);
 
@@ -133,14 +143,16 @@ export default function QueryEditor({
         sql({ dialect: StandardSQL, upperCaseKeywords: false }),
         EditorView.lineWrapping,
         autocompletion({ activateOnTyping: true, maxRenderedOptions: 30, override: [buildHqlSource(hqlSchema)] }),
+        selTracker,
       ];
     }
     return [
       sql({ dialect: StandardSQL, schema: sqlSchema, upperCaseKeywords: false }),
       EditorView.lineWrapping,
       autocompletion({ activateOnTyping: true, maxRenderedOptions: 30 }),
+      selTracker,
     ];
-  }, [sqlSchema, hqlSchema, queryType]);
+  }, [sqlSchema, hqlSchema, queryType, selTracker]);
 
   return (
     <div className="query-editor" onKeyDown={handleKeyDown}>
