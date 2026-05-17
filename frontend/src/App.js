@@ -7,6 +7,7 @@ import QueryEditor from './components/QueryEditor';
 import ResultsGrid from './components/ResultsGrid';
 import QueryHistory from './components/QueryHistory';
 
+
 function App() {
   const [sidebarWidth, setSidebarWidth] = useState(280);
   const [collapsed, setCollapsed]       = useState(false);
@@ -22,7 +23,7 @@ function App() {
       savedWidth.current = next;
       setSidebarWidth(next);
     };
-    const onUp = () => { dragging.current = false; document.body.style.cursor = ''; };
+    const onUp = () => { dragging.current = false; document.body.style.cursor = ''; document.body.style.userSelect = ''; };
     document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
     return () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
@@ -103,22 +104,24 @@ function App() {
       <header className="app-header">
         <div className="app-logo">
           <span className="logo-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-              {/* spinning snowflake arms — orbit the H */}
-              <g className="logo-spin" stroke="currentColor" strokeLinecap="round">
-                {[0, 60, 120, 180, 240, 300].map(a => (
-                  <g key={a} transform={`rotate(${a} 12 12)`}>
-                    <line x1="12" y1="1.5" x2="12"   y2="5.5" strokeWidth="1.5"/>
-                    <line x1="12" y1="3"   x2="10.2" y2="5.5" strokeWidth="1"/>
-                    <line x1="12" y1="3"   x2="13.8" y2="5.5" strokeWidth="1"/>
-                    <circle cx="12" cy="1.5" r="1" fill="currentColor" stroke="none"/>
-                  </g>
-                ))}
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" strokeLinecap="round" strokeLinejoin="round">
+              <defs>
+                <clipPath id="hib-lens">
+                  <circle cx="10" cy="10" r="5.8"/>
+                </clipPath>
+              </defs>
+              {/* Lens ring */}
+              <circle cx="10" cy="10" r="6.5" stroke="currentColor" strokeWidth="1.8"/>
+              {/* Data rows inside lens */}
+              <g clipPath="url(#hib-lens)" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.1">
+                <line x1="3" y1="7.5" x2="17" y2="7.5"/>
+                <line x1="3" y1="10"  x2="17" y2="10"/>
+                <line x1="3" y1="12.5" x2="17" y2="12.5"/>
               </g>
-              {/* static H — always readable */}
-              <line x1="9"  y1="8.5" x2="9"  y2="15.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-              <line x1="15" y1="8.5" x2="15" y2="15.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-              <line x1="9"  y1="12"  x2="15" y2="12"   stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+              {/* Scan line */}
+              <line className="logo-scan" clipPath="url(#hib-lens)" x1="3" y1="4" x2="17" y2="4" stroke="currentColor" strokeWidth="2"/>
+              {/* Handle */}
+              <line x1="15.1" y1="15.1" x2="20.5" y2="20.5" stroke="currentColor" strokeWidth="2.2"/>
             </svg>
           </span>
           <span className="logo-text">Hibernate IDE</span>
@@ -138,6 +141,15 @@ function App() {
 
       <div className="app-body">
         <aside className="sidebar" style={{ width: sidebarWidth }}>
+          <div className="sidebar-topbar">
+            <button className="panel-toggle-btn" onClick={toggleCollapse} title="Collapse sidebar">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1" y="1" width="14" height="14" rx="2"/>
+                <line x1="5" y1="1" x2="5" y2="15"/>
+                <polyline points="8,5 4.5,8 8,11"/>
+              </svg>
+            </button>
+          </div>
           <ConnectionPanel
             activeConnection={activeConnection}
             onConnectionChange={handleConnectionChange}
@@ -161,16 +173,18 @@ function App() {
           </div>
         </aside>
 
-        <div className={`resize-handle ${collapsed ? 'collapsed' : ''}`}
-          onMouseDown={() => { if (!collapsed) { dragging.current = true; didDrag.current = false; document.body.style.cursor = 'col-resize'; } }}
-          onClick={() => { if (!didDrag.current) toggleCollapse(); }}
-          title={collapsed ? 'Expand panel' : 'Collapse panel'}
+        <div
+          className={`resize-handle${collapsed ? ' collapsed' : ''}`}
+          onMouseDown={e => { e.preventDefault(); if (!collapsed) { dragging.current = true; document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none'; } }}
         >
           {collapsed && (
-            <span className="handle-arrow"
-              onMouseDown={e => e.stopPropagation()}
-              onClick={e => { e.stopPropagation(); toggleCollapse(); }}
-            >▶</span>
+            <button className="panel-expand-btn" onClick={toggleCollapse} title="Expand sidebar">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1" y="1" width="14" height="14" rx="2"/>
+                <line x1="5" y1="1" x2="5" y2="15"/>
+                <polyline points="3,5 6.5,8 3,11"/>
+              </svg>
+            </button>
           )}
         </div>
         <main className="main-area">
