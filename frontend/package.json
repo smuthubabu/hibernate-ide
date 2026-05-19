@@ -36,5 +36,11 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8091",
+  "main": "server.js",
+  "bin": "server.js",
+  "pkg": {
+    "assets": ["build/**/*"],
+    "targets": ["node16-linux-x64"]
+  }
 }
